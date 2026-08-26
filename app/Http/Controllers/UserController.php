@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Resources\UserResource;
+use App\Service\CepService;
 use App\Service\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -12,10 +13,12 @@ class UserController extends Controller
 {
 
     private UserService $service;
+     private CepService $cepService;
 
-    public function __construct(UserService $service)
+    public function __construct(UserService $service, CepService $cepService)
     {
         $this->service = $service;
+        $this->cepService = $cepService;
     }
 
     public function index()
@@ -50,5 +53,9 @@ class UserController extends Controller
         $delet = $this->service->delete($id);
          return response()->json(200);
 
+    }
+       public function endereco(Request $request){
+        $cep = $request->user()->cep;
+        return $this->cepService->buscar($cep);
     }
 }

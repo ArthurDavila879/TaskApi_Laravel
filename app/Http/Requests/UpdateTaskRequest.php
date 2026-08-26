@@ -2,17 +2,19 @@
 
 namespace App\Http\Requests;
 
+use App\TaskStatus;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\Enum;
 
-class StoreUserRequest extends FormRequest
+class UpdateTaskRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        return True;
     }
 
     /**
@@ -23,11 +25,9 @@ class StoreUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-
-            "name" => ["required", "string",'max:255'],
-            "email" => ["required", "email",'unique:users,email'],
-            "password" => ["required", "string",'min:8'],
-            "cep" => ["required", "string",],
+          "title"=>["nullable","string"],
+            "description"=>["nullable","string"],
+            "status"=>["nullable",new Enum(TaskStatus::class)],
         ];
     }
 }

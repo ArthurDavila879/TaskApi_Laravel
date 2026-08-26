@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class UserService{
@@ -12,7 +13,7 @@ public function listar(){
     }
 
     public function create(array $user){
-        $hashed = Hash::make('password', [
+        $hashed = Hash::make($user["password"], [
             'rounds' => 12,
         ]);
         $user["password"] = $hashed;
@@ -37,4 +38,5 @@ public function listar(){
         }
         return $usuario->delete();
     }
+ 
 }

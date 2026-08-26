@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreTaskRequest;
+use App\Http\Requests\UpdateTaskRequest;
+use App\Http\Resources\TaskResource;
 use App\Models\Task;
 use App\Service\TaskService;
 use Illuminate\Http\Request;
@@ -16,55 +19,42 @@ class TaskController extends Controller
 
     public function index()
     {
-        return $this->service->listar();
+        
+        return TaskResource::collection($this->service->listar());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        
-    }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreTaskRequest $request)
     {
-        $dados = $request->all();
-        return $this->service->create($dados);
-    }
+        $dados = $request->validated();
+        $dados["user_id"] = $request->user()->id;
+        
+        return new TaskResource($this->service->create($dados));
+    } 
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Task $task)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Task $task)
-    {
-        //
-    }
+  
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Task $task)
+    public function update(UpdateTaskRequest $request, int $id)
     {
-        //
+        $task = Task::findOrFail($id);
+        $this->authorize('update', $task);
+        $dados = $request->validated();
+        return $this->service->update($dados,$id);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Task $task)
+    public function destroy(int $id)
     {
-        //
+        $task = Task::findOrFail($id);
+        $this->authorize('delete', $task);
+        return $this->service->delete($id);
     }
 }
