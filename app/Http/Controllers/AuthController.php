@@ -10,11 +10,14 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         if (Auth::attempt($request->only('email', 'password'))) {
-            return response()->json(['Authorized',"token" => $request->user()->createToken('auth-token', [
+            return response()->json(["token" => $request->user()->createToken('auth-token', [
     'tasks:read',
     'tasks:write',
     'tasks:delete',
     'tasks:update',
+    'users:read',
+    'users:write',
+    'users:delete',
 
 ])->plainTextToken], 200,
             );
