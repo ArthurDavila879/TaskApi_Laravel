@@ -53,12 +53,10 @@ git clone https://github.com/ArthurDavila879/TaskApi_Laravel.git
 cd TaskApi_Laravel
 cp .env.example .env
 docker compose up -d --build
-docker compose exec app composer install
-docker compose exec app php artisan key:generate
 docker compose exec app php artisan migrate
 ```
 
-> O `vendor/` é gerado no build da imagem, mas como o código do host é montado por cima (`./:/var/www`), rodamos `composer install` novamente dentro do container já com o volume ativo — o `compose.yaml` usa um volume nomeado (`vendor:/var/www/vendor`) pra preservar as dependências entre reinícios.
+> Na primeira subida, o container instala as dependências (`composer install`) e gera a `APP_KEY` automaticamente via `docker/entrypoint.sh` — não é preciso rodar isso manualmente. O `vendor/` fica em um volume nomeado (`vendor:/var/www/vendor`) para não ser sobrescrito pelo bind mount do código e para não precisar reinstalar a cada `up`.
 
 A API ficará disponível em `http://localhost:8000` e o phpMyAdmin em `http://localhost:8080`.
 
