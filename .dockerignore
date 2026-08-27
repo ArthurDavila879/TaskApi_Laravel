@@ -1,0 +1,15 @@
+.docker/
+.git/
+.github/
+node_modules/
+task-frontend/node_modules/
+vendor/
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+storage/logs/*
+public/storage
+docker-compose.override.yml
+.env
+.env.*
+!.env.example

@@ -25,9 +25,10 @@ class UpdateTaskRequest extends FormRequest
     public function rules(): array
     {
         return [
-          "title"=>["nullable","string"],
-            "description"=>["nullable","string"],
-            "status"=>["nullable",new Enum(TaskStatus::class)],
+            "title" => ["nullable", "string"],
+            "description" => ["nullable", "string"],
+            "status" => ["nullable", new Enum(TaskStatus::class)],
+            "due_date" => ["nullable", "date"],
         ];
     }
 }

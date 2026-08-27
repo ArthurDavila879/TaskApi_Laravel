@@ -17,12 +17,22 @@ class TaskController extends Controller
         $this->service = $service;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        
-        return TaskResource::collection($this->service->listar());
+        // antes: Task::all() — retornava as tasks de TODO MUNDO.
+        // agora: só as tasks do usuário autenticado.
+        return TaskResource::collection(
+            $this->service->listarPorUsuario($request->user()->id)
+        );
     }
 
+    public function show(Request $request, int $id)
+    {
+        $task = Task::findOrFail($id);
+        $this->authorize('view', $task);
+
+        return new TaskResource($task);
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -33,9 +43,7 @@ class TaskController extends Controller
         $dados["user_id"] = $request->user()->id;
         
         return new TaskResource($this->service->create($dados));
-    } 
-
-  
+    }
 
     /**
      * Update the specified resource in storage.
@@ -45,7 +53,8 @@ class TaskController extends Controller
         $task = Task::findOrFail($id);
         $this->authorize('update', $task);
         $dados = $request->validated();
-        return $this->service->update($dados,$id);
+
+        return new TaskResource($this->service->update($dados, $id));
     }
 
     /**
@@ -55,6 +64,17 @@ class TaskController extends Controller
     {
         $task = Task::findOrFail($id);
         $this->authorize('delete', $task);
-        return $this->service->delete($id);
+
+        $this->service->delete($id);
+        return response()->json(['message' => 'Task removida com sucesso']);
+    }
+
+    // Mantido por compatibilidade — agora protegido pelo grupo auth:sanctum no routes/api.php.
+    // Faz a mesma coisa que o index() já faz sozinho; pode ser removido quando não precisar mais dele.
+    public function getTaskByUser(Request $request)
+    {
+        $userId = $request->user()->id;
+        $tasks = Task::where('user_id', $userId)->get();
+        return TaskResource::collection($tasks);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Models\User;
+use App\UserRole;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -17,6 +18,7 @@ public function listar(){
             'rounds' => 12,
         ]);
         $user["password"] = $hashed;
+        $user["role"]= UserRole::USER;
         
         return User::create($user);
     }
