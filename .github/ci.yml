@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      DB_CONNECTION: sqlite
+      DB_DATABASE: ":memory:"
+
+    steps:
+      - name: Baixar o código
+        uses: actions/checkout@v4
+
+      - name: Instalar PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          extensions: mbstring, pdo_sqlite
+          coverage: none
+
+      - name: Instalar dependências
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Preparar .env e chave da aplicação
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+
+      - name: Verificar estilo do código (Pint)
+        run: vendor/bin/pint --test
+
+      - name: Auditar vulnerabilidades nas dependências
+        run: composer audit
+
+      - name: Rodar testes
+        run: php artisan test
