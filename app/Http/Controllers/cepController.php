@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Service\CepService;
-use Illuminate\Http\Request;
 
 class CepController extends Controller
 {
@@ -18,7 +17,7 @@ class CepController extends Controller
     {
         $dados = $this->service->buscar($cep);
 
-        if (!$dados) {
+        if (! $dados) {
             return response()->json(['message' => 'CEP não encontrado ou inválido'], 404);
         }
 

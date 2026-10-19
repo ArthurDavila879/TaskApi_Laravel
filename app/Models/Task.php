@@ -26,7 +26,7 @@ class Task extends Model
      * Casts de atributos (converte os tipos automaticamente ao buscar do banco).
      */
     protected $casts = [
-         'status' => TaskStatus::class,
+        'status' => TaskStatus::class,
         'is_completed' => 'boolean',
         'due_date' => 'datetime',
     ];

@@ -4,41 +4,49 @@ namespace App\Service;
 
 use App\Models\User;
 use App\UserRole;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
-class UserService{
-   
-public function listar(){
+class UserService
+{
+    public function listar()
+    {
         return User::all();
     }
 
-    public function create(array $user){
-        $hashed = Hash::make($user["password"], [
+    public function create(array $user)
+    {
+        $hashed = Hash::make($user['password'], [
             'rounds' => 12,
         ]);
-        $user["password"] = $hashed;
-        $user["role"]= UserRole::USER;
-        
+        $user['password'] = $hashed;
+        $user['role'] = UserRole::USER;
+
         return User::create($user);
     }
-    public function update(array $dados, int $id){
-       $usuario = User::find($id);
-       if(!$usuario){
-        return null;
-       }
-        $usuario->update($dados);
-        return $usuario;
-    }
-    public function getById(int $id){
-        return User::find($id);
-    }
-    public function delete(int $id){
+
+    public function update(array $dados, int $id)
+    {
         $usuario = User::find($id);
-        if(!$usuario){
+        if (! $usuario) {
             return null;
         }
+        $usuario->update($dados);
+
+        return $usuario;
+    }
+
+    public function getById(int $id)
+    {
+        return User::find($id);
+    }
+
+    public function delete(int $id)
+    {
+        $usuario = User::find($id);
+        if (! $usuario) {
+            return null;
+        }
+
         return $usuario->delete();
     }
- 
 }

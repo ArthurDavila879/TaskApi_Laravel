@@ -14,7 +14,7 @@ class StoreTaskRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return True;
+        return true;
     }
 
     /**
@@ -25,11 +25,11 @@ class StoreTaskRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "title"=>["required","string"],
-            "description"=>["nullable","string"],
-            "status"=>["nullable",new Enum(TaskStatus::class)],
-            "due_date"=>["nullable","date"],
-            "cep"=>["nullable","string"],
+            'title' => ['required', 'string'],
+            'description' => ['nullable', 'string'],
+            'status' => ['nullable', new Enum(TaskStatus::class)],
+            'due_date' => ['nullable', 'date'],
+            'cep' => ['nullable', 'string'],
         ];
     }
 }

@@ -14,7 +14,7 @@ class UpdateTaskRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return True;
+        return true;
     }
 
     /**
@@ -25,10 +25,10 @@ class UpdateTaskRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "title" => ["nullable", "string"],
-            "description" => ["nullable", "string"],
-            "status" => ["nullable", new Enum(TaskStatus::class)],
-            "due_date" => ["nullable", "date"],
+            'title' => ['nullable', 'string'],
+            'description' => ['nullable', 'string'],
+            'status' => ['nullable', new Enum(TaskStatus::class)],
+            'due_date' => ['nullable', 'date'],
         ];
     }
 }

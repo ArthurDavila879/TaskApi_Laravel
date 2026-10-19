@@ -3,7 +3,6 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
@@ -14,10 +13,7 @@ class CadastroTarefa extends Notification
     /**
      * Create a new notification instance.
      */
-    public function __construct()
-    {
-      
-    }
+    public function __construct() {}
 
     /**
      * Get the notification's delivery channels.

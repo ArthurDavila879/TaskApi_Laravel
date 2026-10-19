@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 class TaskController extends Controller
 {
     private TaskService $service;
+
     public function __construct(TaskService $service)
     {
         $this->service = $service;
@@ -40,8 +41,8 @@ class TaskController extends Controller
     public function store(StoreTaskRequest $request)
     {
         $dados = $request->validated();
-        $dados["user_id"] = $request->user()->id;
-        
+        $dados['user_id'] = $request->user()->id;
+
         return new TaskResource($this->service->create($dados));
     }
 
@@ -66,6 +67,7 @@ class TaskController extends Controller
         $this->authorize('delete', $task);
 
         $this->service->delete($id);
+
         return response()->json(['message' => 'Task removida com sucesso']);
     }
 
@@ -75,6 +77,7 @@ class TaskController extends Controller
     {
         $userId = $request->user()->id;
         $tasks = Task::where('user_id', $userId)->get();
+
         return TaskResource::collection($tasks);
     }
 }

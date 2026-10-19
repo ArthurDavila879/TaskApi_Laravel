@@ -1,20 +1,16 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\CepController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
-use Illuminate\Http\Request;
-use Illuminate\Routing\Route as RoutingRoute;
 use Illuminate\Support\Facades\Route;
-
 
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::post('/users', [UserController::class, 'store']);
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post("/logout", [AuthController::class, 'logout']);
+    Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/me', [UserController::class, 'me']);
 
     Route::get('/users/endereco', [UserController::class, 'endereco']);
@@ -25,7 +21,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::middleware('ability:users:read')->group(function () {
         Route::get('/users/{id}', [UserController::class, 'getById']);
     });
-    Route::middleware("Isadmin")->get("/users", [UserController::class, 'index']);
+    Route::middleware('Isadmin')->get('/users', [UserController::class, 'index']);
 
     Route::middleware('ability:users:write')->put('/users/{id}', [UserController::class, 'update']);
     Route::middleware('ability:users:delete')->delete('/users/{id}', [UserController::class, 'destroy']);
